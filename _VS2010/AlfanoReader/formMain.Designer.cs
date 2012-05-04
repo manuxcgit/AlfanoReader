@@ -127,9 +127,11 @@
             // 
             // ToolStripMenuItemportSerie
             // 
+            this.ToolStripMenuItemportSerie.Enabled = false;
             this.ToolStripMenuItemportSerie.Name = "ToolStripMenuItemportSerie";
             this.ToolStripMenuItemportSerie.Size = new System.Drawing.Size(152, 22);
             this.ToolStripMenuItemportSerie.Text = "Port Serie";
+            this.ToolStripMenuItemportSerie.Click += new System.EventHandler(this.e_ToolStripMenuItemportSerie_Click);
             // 
             // formMain
             // 
@@ -145,6 +147,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Alfano Reader";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.e_formMain_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.e_formMain_FormClosed);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.menuStrip.ResumeLayout(false);

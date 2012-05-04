@@ -8,9 +8,9 @@ using System.Threading;
 
 namespace AlfanoReader
 {
-    enum enumEventArgConnecte { connecté, deconnecté, dataReceived, fichierCréé, transfertCompleted };
+    public enum enumEventArgConnecte { connecté, deconnecté, dataReceived, fichierCréé, transfertCompleted };
 
-    class classSerial
+    public class classSerial
     {
         #region definitions
         public class classParamSerial
@@ -40,30 +40,29 @@ namespace AlfanoReader
         public string PortName { get { return _serialPort.PortName; } }
         public int BytesReceived { get { return _serialPort.BytesToRead; } }
 
-        private Thread threadWatchConnection;
         private bool _isConnected = false;
         private SerialPort _serialPort;
+        public classParamSerial ParamSerial { get; set; }
         #endregion
 
-        public classSerial(classParamSerial serial)
+        public classSerial(classParamSerial paramSerial)
         {
-            _serialPort = new SerialPort(serial.PortName, serial.BaudRate, serial.Parity, serial.DataBits, serial.StopBit);
-            _serialPort.DataReceived += new SerialDataReceivedEventHandler(_serialPort_DataReceived);
+            try
+            {
+                ParamSerial = paramSerial;
+                _serialPort = new SerialPort(paramSerial.PortName, paramSerial.BaudRate, paramSerial.Parity, paramSerial.DataBits, paramSerial.StopBit);
+                _serialPort.DataReceived += new SerialDataReceivedEventHandler(_serialPort_DataReceived);
+            }
+            catch { }
         }
-
-        public classParamSerial ParamSerial { get; set;}
 
         private void _serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             eventInfosSerial(this, new EventArgsConnecte(enumEventArgConnecte.dataReceived));
-            if (_serialPort.BytesToRead == 2048) { eventInfosSerial(this, new EventArgsConnecte(enumEventArgConnecte.transfertCompleted)); }
+            if (_serialPort.BytesToRead == 2048) 
+            { eventInfosSerial(this, new EventArgsConnecte(enumEventArgConnecte.transfertCompleted)); }
         }
 
-        private void watchConnection()
-        {
-            while (_isConnected) { System.Windows.Forms.Application.DoEvents(); }
-            eventInfosSerial(this, new EventArgsConnecte(enumEventArgConnecte.deconnecté));
-        }
 
         #region methodes publiques
         public Boolean m_open()
@@ -72,9 +71,6 @@ namespace AlfanoReader
             {
                 _serialPort.Open();
                 eventInfosSerial(this, new EventArgsConnecte(enumEventArgConnecte.connecté));
-                _isConnected = true;
-                threadWatchConnection = new Thread(watchConnection);
-                threadWatchConnection.Start();
             }
             catch (Exception e) { }
             return _serialPort.IsOpen;
@@ -84,8 +80,8 @@ namespace AlfanoReader
         {
             try
             {
+                // eventInfosSerial(this, new EventArgsConnecte(enumEventArgConnecte.deconnecté));
                 _serialPort.Close();
-                _isConnected = false;
             }
             catch { }
         }
@@ -115,13 +111,13 @@ namespace AlfanoReader
         #endregion
     }
 
-    class EventArgsConnecte : EventArgs
+    public class EventArgsConnecte : EventArgs
     {
 
         public enumEventArgConnecte Arg { get; private set; }
         public EventArgsConnecte(enumEventArgConnecte arg)
         {
-            this.Arg= arg;
+            this.Arg = arg;
         }
     }
 }
