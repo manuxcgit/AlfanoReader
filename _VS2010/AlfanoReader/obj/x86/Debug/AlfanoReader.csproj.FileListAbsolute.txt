@@ -16,3 +16,13 @@ C:\Users\PC Placard\Desktop\AlfanoReader\_VS2010\AlfanoReader\obj\x86\Debug\Gene
 C:\Users\PC Placard\Desktop\AlfanoReader\_VS2010\AlfanoReader\obj\x86\Debug\GenerateResource.write.1.tlog
 C:\Users\PC Placard\Desktop\AlfanoReader\_VS2010\AlfanoReader\bin\Debug\AlfanoReader.exe
 C:\Users\PC Placard\Desktop\AlfanoReader\_VS2010\AlfanoReader\bin\Debug\AlfanoReader.pdb
+C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\obj\x86\Debug\AlfanoReader.exe
+C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\obj\x86\Debug\AlfanoReader.pdb
+C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\obj\x86\Debug\AlfanoReader.formMain.resources
+C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\obj\x86\Debug\AlfanoReader.Properties.Resources.resources
+C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\bin\Debug\AlfanoReader.exe
+C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\bin\Debug\AlfanoReader.pdb
+C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\obj\x86\Debug\AlfanoReader.formParamSerie.resources

@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.IO.Ports;
+using System.Threading;
 
 namespace AlfanoReader
 {
+    enum enumEventArgConnecte { connecté, deconnecté, dataReceived, fichierCréé, transfertCompleted };
+
     class classSerial
     {
-        private SerialPort _serialPort;
+        #region definitions
         public class classParamSerial
         {
             int _baudRate;
@@ -33,9 +36,14 @@ namespace AlfanoReader
             public int DataBits { get { return _dataBits; } }
             public StopBits StopBit { get { return _stopBit; } }
         }
-        public event SerialDataReceivedEventHandler DataReceived;
-        public event EventHandler DataCompleted;
-        public event EventHandler<EventArgsConnecte> ConnectOrDisconnect;
+        public event EventHandler<EventArgsConnecte> eventInfosSerial;        //renvoie vers formMain string { connecté, deconnecté, fichier créé, transfert en cours }       
+        public string PortName { get { return _serialPort.PortName; } }
+        public int BytesReceived { get { return _serialPort.BytesToRead; } }
+
+        private Thread threadWatchConnection;
+        private bool _isConnected = false;
+        private SerialPort _serialPort;
+        #endregion
 
         public classSerial(classParamSerial serial)
         {
@@ -43,22 +51,30 @@ namespace AlfanoReader
             _serialPort.DataReceived += new SerialDataReceivedEventHandler(_serialPort_DataReceived);
         }
 
-        public string PortName { get { return _serialPort.PortName; } }
+        public classParamSerial ParamSerial { get; set;}
 
-        public int BytesReceived { get { return _serialPort.BytesToRead; } }
-
-        void _serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void _serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            DataReceived(this, e);
-            if (_serialPort.BytesToRead == 2048) { DataCompleted(this, null); }
+            eventInfosSerial(this, new EventArgsConnecte(enumEventArgConnecte.dataReceived));
+            if (_serialPort.BytesToRead == 2048) { eventInfosSerial(this, new EventArgsConnecte(enumEventArgConnecte.transfertCompleted)); }
         }
 
+        private void watchConnection()
+        {
+            while (_isConnected) { System.Windows.Forms.Application.DoEvents(); }
+            eventInfosSerial(this, new EventArgsConnecte(enumEventArgConnecte.deconnecté));
+        }
+
+        #region methodes publiques
         public Boolean m_open()
         {
             try
             {
                 _serialPort.Open();
-                ConnectOrDisconnect(this, new EventArgsConnecte("Connecté à " + _serialPort.PortName));
+                eventInfosSerial(this, new EventArgsConnecte(enumEventArgConnecte.connecté));
+                _isConnected = true;
+                threadWatchConnection = new Thread(watchConnection);
+                threadWatchConnection.Start();
             }
             catch (Exception e) { }
             return _serialPort.IsOpen;
@@ -69,6 +85,7 @@ namespace AlfanoReader
             try
             {
                 _serialPort.Close();
+                _isConnected = false;
             }
             catch { }
         }
@@ -90,21 +107,21 @@ namespace AlfanoReader
                 }
                 bw.Flush();
                 bw.Close();
-                ConnectOrDisconnect(this, new EventArgsConnecte(new FileInfo(nomFichier).Name + " crée"));
+                eventInfosSerial(this, new EventArgsConnecte(enumEventArgConnecte.fichierCréé));
                 return true;
             }
             catch { return false; }
         }
-
-
+        #endregion
     }
-    public class EventArgsConnecte : EventArgs
+
+    class EventArgsConnecte : EventArgs
     {
 
-        public string Mode { get; private set; }
-        public EventArgsConnecte(string mode)
+        public enumEventArgConnecte Arg { get; private set; }
+        public EventArgsConnecte(enumEventArgConnecte arg)
         {
-            this.Mode = mode;
+            this.Arg= arg;
         }
     }
 }

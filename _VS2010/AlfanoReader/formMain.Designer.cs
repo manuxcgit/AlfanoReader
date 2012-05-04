@@ -115,6 +115,7 @@
             this.ToolStripMenuItemquitter.Name = "ToolStripMenuItemquitter";
             this.ToolStripMenuItemquitter.Size = new System.Drawing.Size(196, 22);
             this.ToolStripMenuItemquitter.Text = "Quitter";
+            this.ToolStripMenuItemquitter.Click += new System.EventHandler(this.e_ToolStripMenuItemquitter_Click);
             // 
             // ToolStripMenuItemparametres
             // 
@@ -127,7 +128,7 @@
             // ToolStripMenuItemportSerie
             // 
             this.ToolStripMenuItemportSerie.Name = "ToolStripMenuItemportSerie";
-            this.ToolStripMenuItemportSerie.Size = new System.Drawing.Size(124, 22);
+            this.ToolStripMenuItemportSerie.Size = new System.Drawing.Size(152, 22);
             this.ToolStripMenuItemportSerie.Text = "Port Serie";
             // 
             // formMain
@@ -141,7 +142,9 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "formMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Alfano Reader";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.e_formMain_FormClosing);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.menuStrip.ResumeLayout(false);

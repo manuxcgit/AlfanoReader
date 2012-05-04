@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Enumeration;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
@@ -18,11 +20,16 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JProgressBar;
 import javax.swing.JTable;
+
+import com.sun.org.apache.bcel.internal.generic.ATHROW;
+import com.sun.xml.internal.ws.api.message.Message;
+
 import gnu.io.*;
+import java.awt.Button;
 
 
 
-public class AlfanoReader implements SerialPortEventListener {
+public class frameMain implements SerialPortEventListener {
 
 	private JFrame frame;
 	private JTable table;
@@ -30,6 +37,8 @@ public class AlfanoReader implements SerialPortEventListener {
 	JButton btnAnnuler; 
 	JLabel lblInfo;
 	boolean chargerAlfanoRunning;
+	
+	classSerial mSerial ;
 	
 	
 	 private static final String PORT_NAMES[] = {
@@ -55,7 +64,7 @@ public class AlfanoReader implements SerialPortEventListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AlfanoReader window = new AlfanoReader();
+					frameMain window = new frameMain();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -67,8 +76,9 @@ public class AlfanoReader implements SerialPortEventListener {
 	/**
 	 * Create the application.
 	 */
-	public AlfanoReader() {
+	public frameMain() {
 		initialize();
+		mSerial = new classSerial(SerialReceived, this.getClass().getName());
 	}
 
 	/**
@@ -89,7 +99,6 @@ public class AlfanoReader implements SerialPortEventListener {
 		btnAnnuler = new JButton("Annuler");
 		btnAnnuler.setBounds(new Rectangle(10, 10, 10, 10));
 		btnAnnuler.setBounds(451, 87, 89, 34);
-		btnAnnuler.setVisible(false);
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				e_btnAnnulerClick();
@@ -126,26 +135,57 @@ public class AlfanoReader implements SerialPortEventListener {
 
 		});
 		mnFichier.add(mntmChargerDepuisAlfano);
+		
+		JMenu mnParametres = new JMenu("Parametres");
+		menuBar.add(mnParametres);
+		
+		JMenuItem mntmPortSerie = new JMenuItem("Port Serie");
+		mnParametres.add(mntmPortSerie);
 	}
 	
-
+	final Handler SerialReceived = new Handler() {
+		public void handleMessage(Message msg) {
+		}
+		
+		@Override
+		public void publish(LogRecord arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void flush() {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void close() throws SecurityException {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	
 	protected void e_btnAnnulerClick() {
 		// TODO Auto-generated method stub
 		chargerAlfanoRunning = false;
 	}
 
 	private void m_chargerDepuisAlfano() {
+		if (!mSerial.m_connect()){
+			return;
+		}
 		pBChargement.setVisible(true);
 		btnAnnuler.setVisible(true);
 		lblInfo.setVisible(true);
 		lblInfo.setText("En attente de chargement");
 		 try {
-			 CommPortIdentifier portId = findPortId();
+		/*	 CommPortIdentifier portId = findPortId();
 		        if (portId == null) {
 		            lblInfo.setText("Could not find COM port.");
 		            return;
 		        }
-	            serialPort = (SerialPort)portId.open(this.getClass().getName(), TIME_OUT);
+	            serialPort = (SerialPort) portId.open(this.getClass().getName(), TIME_OUT);
 	            serialPort.setSerialPortParams(DATA_RATE,
 	                                           SerialPort.DATABITS_8,
 	                                           SerialPort.STOPBITS_1,
@@ -155,7 +195,7 @@ public class AlfanoReader implements SerialPortEventListener {
 	            serialPort.addEventListener( this);
 	            inputStream = serialPort.getInputStream();
 ;
-	            	
+	         */   	
 	            }
 	        
 	        catch (Exception e) {
