@@ -26,4 +26,8 @@ C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\obj\x86\Debug\Generate
 C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\bin\Debug\AlfanoReader.exe
 C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\bin\Debug\AlfanoReader.pdb
 C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\obj\x86\Debug\AlfanoReader.formParamSerie.resources
+<<<<<<< HEAD
 C:\Users\Pharma\Desktop\AlfanoReader\_VS2010\AlfanoReader\bin\Debug\AlfanoReader.exe.config
+=======
+C:\Users\PC Placard\Desktop\AlfanoReader\_VS2010\AlfanoReader\obj\x86\Debug\AlfanoReader.formParamSerie.resources
+>>>>>>> 041a4e0bf1d1250088e2e7a62263978149bf1520

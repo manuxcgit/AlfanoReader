@@ -17,7 +17,6 @@ namespace AlfanoReader
     {
 
         classSerial _serial;
-        private bool _transferCompleted;
         private delegate void delegate_eventInfosSerial(enumEventArgConnecte arg);
         private FileInfo _FichierAlfano;
 
@@ -30,18 +29,32 @@ namespace AlfanoReader
         #region Connection Port Serie + creation FichierAlfano
         private void e_ToolStripMenuItemimporterDepuisAlfano_Click(object sender, EventArgs e)
         {
+            m_serialConnect();
+        }
+
+        private void m_serialConnect()
+        {
             try
             {
+<<<<<<< HEAD
                 classSerial.classParamSerial _paramPortSerie = (classSerial.classParamSerial)paramApplication.LoadFromXML(typeof(classSerial.classParamSerial));
                 _serial = new classSerial(new classSerial.classParamSerial("COM3", 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One));
 
                // paramApplication.SaveToXml(_serial.ParamSerial.BaudRate, typeof(int));
                 paramApplication.SaveToXml(_serial.ParamSerial, typeof(classSerial.classParamSerial));
 
+=======
+                if (_serial == null )
+                {
+                    _serial = new classSerial(new classSerial.classParamSerial("COM3", 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One));
+                }
+                ToolStripMenuItemportSerie.Enabled = true;
+>>>>>>> 041a4e0bf1d1250088e2e7a62263978149bf1520
                 _serial.eventInfosSerial += new EventHandler<EventArgsConnecte>(_handler_eventInfosSerial);
                 if (!_serial.m_open())
                 {
-                    MessageBox.Show("PROBLEME DE PORT SERIE", "Impossible d'ouvrir le port série", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Impossible d'ouvrir le port série", "PROBLEME DE PORT SERIE", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    toolStripStatusLabelInfo.Text = "Pas de connection";
                 }
             }
             catch (Exception e1){ }
@@ -58,12 +71,16 @@ namespace AlfanoReader
             {
                 case enumEventArgConnecte.connecté:
                     {
-                        toolStripStatusLabelInfo.Text = "Connecté à " + _serial.PortName;
+                        toolStripStatusLabelInfo.Text = "Connecté à " + _serial.PortName + " , attend Transfert";
                         break;
                     }
                 case enumEventArgConnecte.dataReceived:
                     {
-                        try { toolStripProgressBar.Value = _serial.BytesReceived; }
+                        try
+                        {
+                            toolStripProgressBar.Value = _serial.BytesReceived;
+                            toolStripStatusLabelInfo.Text = string.Format("Transfert en cours, {0}% effectué", (_serial.BytesReceived * 100) / 2048);
+                        }
                         catch { }
                         Application.DoEvents();
                         break;
@@ -95,11 +112,12 @@ namespace AlfanoReader
                 {
                     sfd.FileName += ".alf";
                 }
+                _FichierAlfano = new FileInfo(sfd.FileName);
                 if (_serial.m_save(sfd.FileName))
                 {
                     toolStripProgressBar.Value = 0;
-                    _transferCompleted = true;
                 }
+                else { _FichierAlfano = null; }
             }
         }
         #endregion
@@ -113,6 +131,22 @@ namespace AlfanoReader
         {
             e.Cancel = (MessageBox.Show("Voulez vous quitter ?", "QUITTER",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No);
+        }
+
+        private void e_formMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            try { _serial.m_close(); }
+            catch { }
+        }
+
+        private void e_ToolStripMenuItemportSerie_Click(object sender, EventArgs e)
+        {
+            formParamSerie fPS = new formParamSerie(ref _serial);
+            if (fPS.ShowDialog() == DialogResult.OK)
+            {
+                _serial = new classSerial(_serial.ParamSerial);
+                m_serialConnect();
+            }
         }
     }
 }

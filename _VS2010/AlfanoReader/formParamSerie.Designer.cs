@@ -32,11 +32,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.comboBox6 = new System.Windows.Forms.ComboBox();
+            this.cBPortName = new System.Windows.Forms.ComboBox();
+            this.cBStopBit = new System.Windows.Forms.ComboBox();
+            this.cBDataBits = new System.Windows.Forms.ComboBox();
+            this.cBParity = new System.Windows.Forms.ComboBox();
+            this.cBBaudRate = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.cmdValider = new System.Windows.Forms.Button();
             this.cmdAnnuler = new System.Windows.Forms.Button();
@@ -78,45 +78,45 @@
             this.label4.TabIndex = 3;
             this.label4.Text = "Parity :";
             // 
-            // comboBox1
+            // cBPortName
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(77, 6);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 5;
+            this.cBPortName.FormattingEnabled = true;
+            this.cBPortName.Location = new System.Drawing.Point(77, 6);
+            this.cBPortName.Name = "cBPortName";
+            this.cBPortName.Size = new System.Drawing.Size(121, 21);
+            this.cBPortName.TabIndex = 5;
             // 
-            // comboBox2
+            // cBStopBit
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(77, 114);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 6;
+            this.cBStopBit.FormattingEnabled = true;
+            this.cBStopBit.Location = new System.Drawing.Point(77, 114);
+            this.cBStopBit.Name = "cBStopBit";
+            this.cBStopBit.Size = new System.Drawing.Size(121, 21);
+            this.cBStopBit.TabIndex = 6;
             // 
-            // comboBox4
+            // cBDataBits
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(77, 87);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(121, 21);
-            this.comboBox4.TabIndex = 8;
+            this.cBDataBits.FormattingEnabled = true;
+            this.cBDataBits.Location = new System.Drawing.Point(77, 87);
+            this.cBDataBits.Name = "cBDataBits";
+            this.cBDataBits.Size = new System.Drawing.Size(121, 21);
+            this.cBDataBits.TabIndex = 8;
             // 
-            // comboBox5
+            // cBParity
             // 
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(77, 60);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(121, 21);
-            this.comboBox5.TabIndex = 9;
+            this.cBParity.FormattingEnabled = true;
+            this.cBParity.Location = new System.Drawing.Point(77, 60);
+            this.cBParity.Name = "cBParity";
+            this.cBParity.Size = new System.Drawing.Size(121, 21);
+            this.cBParity.TabIndex = 9;
             // 
-            // comboBox6
+            // cBBaudRate
             // 
-            this.comboBox6.FormattingEnabled = true;
-            this.comboBox6.Location = new System.Drawing.Point(77, 33);
-            this.comboBox6.Name = "comboBox6";
-            this.comboBox6.Size = new System.Drawing.Size(121, 21);
-            this.comboBox6.TabIndex = 10;
+            this.cBBaudRate.FormattingEnabled = true;
+            this.cBBaudRate.Location = new System.Drawing.Point(77, 33);
+            this.cBBaudRate.Name = "cBBaudRate";
+            this.cBBaudRate.Size = new System.Drawing.Size(121, 21);
+            this.cBBaudRate.TabIndex = 10;
             // 
             // label6
             // 
@@ -135,6 +135,7 @@
             this.cmdValider.TabIndex = 12;
             this.cmdValider.Text = "Valider";
             this.cmdValider.UseVisualStyleBackColor = true;
+            this.cmdValider.Click += new System.EventHandler(this.e_cmdValider_Click);
             // 
             // cmdAnnuler
             // 
@@ -144,6 +145,7 @@
             this.cmdAnnuler.TabIndex = 13;
             this.cmdAnnuler.Text = "Annuler";
             this.cmdAnnuler.UseVisualStyleBackColor = true;
+            this.cmdAnnuler.Click += new System.EventHandler(this.e_cmdAnnuler_Click);
             // 
             // formParamSerie
             // 
@@ -153,11 +155,11 @@
             this.Controls.Add(this.cmdAnnuler);
             this.Controls.Add(this.cmdValider);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.comboBox6);
-            this.Controls.Add(this.comboBox5);
-            this.Controls.Add(this.comboBox4);
-            this.Controls.Add(this.comboBox2);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cBBaudRate);
+            this.Controls.Add(this.cBParity);
+            this.Controls.Add(this.cBDataBits);
+            this.Controls.Add(this.cBStopBit);
+            this.Controls.Add(this.cBPortName);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -177,11 +179,11 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.ComboBox comboBox5;
-        private System.Windows.Forms.ComboBox comboBox6;
+        private System.Windows.Forms.ComboBox cBPortName;
+        private System.Windows.Forms.ComboBox cBStopBit;
+        private System.Windows.Forms.ComboBox cBDataBits;
+        private System.Windows.Forms.ComboBox cBParity;
+        private System.Windows.Forms.ComboBox cBBaudRate;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button cmdValider;
         private System.Windows.Forms.Button cmdAnnuler;
