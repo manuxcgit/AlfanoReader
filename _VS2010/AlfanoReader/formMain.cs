@@ -24,7 +24,7 @@ namespace AlfanoReader
         public formMain()
         {
             InitializeComponent();
-
+            paramApplication.setFileName("param.xml");
         }
 
         #region Connection Port Serie + creation FichierAlfano
@@ -32,14 +32,19 @@ namespace AlfanoReader
         {
             try
             {
+                classSerial.classParamSerial _paramPortSerie = (classSerial.classParamSerial)paramApplication.LoadFromXML(typeof(classSerial.classParamSerial));
                 _serial = new classSerial(new classSerial.classParamSerial("COM3", 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One));
+
+               // paramApplication.SaveToXml(_serial.ParamSerial.BaudRate, typeof(int));
+                paramApplication.SaveToXml(_serial.ParamSerial, typeof(classSerial.classParamSerial));
+
                 _serial.eventInfosSerial += new EventHandler<EventArgsConnecte>(_handler_eventInfosSerial);
                 if (!_serial.m_open())
                 {
                     MessageBox.Show("PROBLEME DE PORT SERIE", "Impossible d'ouvrir le port série", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            catch { }
+            catch (Exception e1){ }
         }
 
         void _handler_eventInfosSerial(object sender, EventArgsConnecte e)
