@@ -18,35 +18,37 @@ namespace AlfanoReader
             _fileName = v_AdresseBase + fileName;
         }
 
-        public static object LoadFromXML (System.Type type)
+        public static object LoadFromXML(object o)
         {
             if (File.Exists(_fileName))
             {
                 object result;
 
                 XmlReader r = XmlReader.Create(new StreamReader(_fileName));
-
-                XmlSerializer s = new XmlSerializer(type);
-                result = s.Deserialize(r);
-                r.Close();
+                try
+                {
+                    XmlSerializer s = new XmlSerializer(o.GetType());
+                    result = s.Deserialize(r);
+                }
+                finally { r.Close(); }
 
                 return result;
             }
             return null;
         }
 
-        public static void SaveToXml(object o, System.Type type)
+        public static void SaveToXml(object o)
         {
-            XmlSerializer s = new XmlSerializer(type);
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Encoding = Encoding.UTF8;
-            settings.Indent = true;
-            settings.IndentChars = ("\t");
-            using (XmlWriter w = XmlWriter.Create(_fileName, settings))
-            {
-                s.Serialize(w, o);
-                w.Flush();
-            }
+              XmlSerializer s = new XmlSerializer(o.GetType());
+              XmlWriterSettings settings = new XmlWriterSettings();
+              settings.Encoding = Encoding.UTF8;
+              settings.Indent = true;
+              settings.IndentChars = ("\t");
+              using (XmlWriter w = XmlWriter.Create(_fileName, settings))
+              {
+                  s.Serialize(w, o);
+                  w.Flush();
+              }   
         }
     }
 }

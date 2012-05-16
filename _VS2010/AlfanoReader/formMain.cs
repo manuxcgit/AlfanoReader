@@ -8,6 +8,12 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
+using System.IO.Ports;
+
+
+
 
 namespace AlfanoReader
 {
@@ -20,10 +26,33 @@ namespace AlfanoReader
         private delegate void delegate_eventInfosSerial(enumEventArgConnecte arg);
         private FileInfo _FichierAlfano;
 
+
         public formMain()
         {
             InitializeComponent();
             paramApplication.setFileName("param.xml");
+           /* _serial = new classSerial(null);
+            try
+            {
+                _serial._ParamSerial = (classParamSerial)paramApplication.LoadFromXML(typeof(classParamSerial));
+            }
+            catch (Exception e) { } */
+            classParamSerial c = new classParamSerial("COM3", 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One);
+
+            _serial = new classSerial((classParamSerial)paramApplication.LoadFromXML(c));
+
+            if (_serial == null)
+            {
+                //     classSerial.classParamSerial _paramPortSerie = (classSerial.classParamSerial)paramApplication.LoadFromXML(typeof(classSerial.classParamSerial));
+                _serial = new classSerial(new classParamSerial("COM3", 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One));
+            }
+            // paramApplication.SaveToXml(_serial.ParamSerial.BaudRate, typeof(int));
+            paramApplication.SaveToXml(_serial._ParamSerial);//, typeof(classParamSerial));
+            //  string test = _serial._ParamSerial.serialiseObject();
+
+            ToolStripMenuItemportSerie.Enabled = true;
+
+
         }
 
         #region Connection Port Serie + creation FichierAlfano
@@ -36,20 +65,20 @@ namespace AlfanoReader
         {
             try
             {
-<<<<<<< HEAD
-                classSerial.classParamSerial _paramPortSerie = (classSerial.classParamSerial)paramApplication.LoadFromXML(typeof(classSerial.classParamSerial));
-                _serial = new classSerial(new classSerial.classParamSerial("COM3", 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One));
+ 
 
-               // paramApplication.SaveToXml(_serial.ParamSerial.BaudRate, typeof(int));
-                paramApplication.SaveToXml(_serial.ParamSerial, typeof(classSerial.classParamSerial));
 
-=======
-                if (_serial == null )
+
+
+
+
+
+         /*       if (_serial == null )
                 {
-                    _serial = new classSerial(new classSerial.classParamSerial("COM3", 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One));
-                }
-                ToolStripMenuItemportSerie.Enabled = true;
->>>>>>> 041a4e0bf1d1250088e2e7a62263978149bf1520
+                    _serial = new classSerial(new classParamSerial("COM3", 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One));
+                } */
+                
+
                 _serial.eventInfosSerial += new EventHandler<EventArgsConnecte>(_handler_eventInfosSerial);
                 if (!_serial.m_open())
                 {
@@ -59,6 +88,8 @@ namespace AlfanoReader
             }
             catch (Exception e1){ }
         }
+
+
 
         void _handler_eventInfosSerial(object sender, EventArgsConnecte e)
         {
@@ -144,7 +175,7 @@ namespace AlfanoReader
             formParamSerie fPS = new formParamSerie(ref _serial);
             if (fPS.ShowDialog() == DialogResult.OK)
             {
-                _serial = new classSerial(_serial.ParamSerial);
+                _serial = new classSerial(_serial._ParamSerial);
                 m_serialConnect();
             }
         }

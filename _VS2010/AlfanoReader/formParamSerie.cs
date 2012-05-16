@@ -23,13 +23,13 @@ namespace AlfanoReader
             cBPortName.Items.AddRange(SerialPort.GetPortNames());
             cBPortName.Text = _serial.PortName;
             cBBaudRate.Items.AddRange(new string[] { "2400", "9600", "14400", "19200", "38400", "57600", "115200" });
-            cBBaudRate.Text = _serial.ParamSerial.BaudRate.ToString();
+            cBBaudRate.Text = _serial._ParamSerial.BaudRate.ToString();
             cBDataBits.Items.AddRange(new string[] { "4", "5", "6", "7", "8" });
-            cBDataBits.Text = _serial.ParamSerial.DataBits.ToString();
+            cBDataBits.Text = _serial._ParamSerial.DataBits.ToString();
             cBParity.Items.AddRange(Enum.GetNames(typeof(Parity)));
-            cBParity.Text = _serial.ParamSerial.Parity.ToString();
+            cBParity.Text = _serial._ParamSerial.Parity.ToString();
             cBStopBit.Items.AddRange(Enum.GetNames(typeof(StopBits)));
-            cBStopBit.Text = _serial.ParamSerial.StopBit.ToString();
+            cBStopBit.Text = _serial._ParamSerial.StopBit.ToString();
         }
 
         private void e_cmdAnnuler_Click(object sender, EventArgs e)
@@ -43,7 +43,7 @@ namespace AlfanoReader
             {
                 Parity p = (Parity)Enum.GetNames(typeof(Parity)).ToList().FindIndex(x => x.Equals(cBParity.Text));
                 StopBits s = (StopBits)Enum.GetNames(typeof(StopBits)).ToList().FindIndex(y => y.Equals(cBStopBit.Text));
-                _serial.ParamSerial = new classSerial.classParamSerial(
+                _serial._ParamSerial = new classParamSerial(
                     cBPortName.Text,
                     int.Parse(cBBaudRate.Text),
                     p,

@@ -5,51 +5,59 @@ using System.Text;
 using System.IO;
 using System.IO.Ports;
 using System.Threading;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace AlfanoReader
 {
     public enum enumEventArgConnecte { connecté, deconnecté, dataReceived, fichierCréé, transfertCompleted };
+    
+    
+    public class classParamSerial
+    {
+        int _baudRate;
+        Parity _parity;
+        int _dataBits;
+        StopBits _stopBit;
+        string _portName;
 
-    public class classSerial
+        public classParamSerial() { }
+
+        public classParamSerial(string portname, int baubrate, Parity parity, int databits, StopBits stopbit)
+        {
+            _portName = portname;
+            _baudRate = baubrate;
+            _parity = parity;
+            _dataBits = databits;
+            _stopBit = stopbit;
+        }
+
+        public string PortName { get { return _portName; } set { } }
+        public int BaudRate { get { return _baudRate; } set { } }
+        public Parity Parity { get { return _parity; } set { } }
+        public int DataBits { get { return _dataBits; } set { } }
+        public StopBits StopBit { get { return _stopBit; } set { } }
+    }
+    
+    public class classSerial 
     {
         #region definitions
-        public class classParamSerial
-        {
-            int _baudRate;
-            Parity _parity;
-            int _dataBits;
-            StopBits _stopBit;
-            string _portName;
-
-            public classParamSerial(string portname, int baubrate, Parity parity, int databits, StopBits stopbit)
-            {
-                _portName = portname;
-                _baudRate = baubrate;
-                _parity = parity;
-                _dataBits = databits;
-                _stopBit = stopbit;
-            }
-
-            public string PortName { get { return _portName; } }
-            public int BaudRate { get { return _baudRate; } }
-            public Parity Parity { get { return _parity; } }
-            public int DataBits { get { return _dataBits; } }
-            public StopBits StopBit { get { return _stopBit; } }
-        }
         public event EventHandler<EventArgsConnecte> eventInfosSerial;        //renvoie vers formMain string { connecté, deconnecté, fichier créé, transfert en cours }       
         public string PortName { get { return _serialPort.PortName; } }
         public int BytesReceived { get { return _serialPort.BytesToRead; } }
 
         private bool _isConnected = false;
         private SerialPort _serialPort;
-        public classParamSerial ParamSerial { get; set; }
+        public classParamSerial _ParamSerial { get; set; }
         #endregion
+
+        //public classSerial() { }
 
         public classSerial(classParamSerial paramSerial)
         {
             try
             {
-                ParamSerial = paramSerial;
+                _ParamSerial = paramSerial;
                 _serialPort = new SerialPort(paramSerial.PortName, paramSerial.BaudRate, paramSerial.Parity, paramSerial.DataBits, paramSerial.StopBit);
                 _serialPort.DataReceived += new SerialDataReceivedEventHandler(_serialPort_DataReceived);
             }

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<classParamSerial xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<PortName>COM3</PortName>
+	<BaudRate>9600</BaudRate>
+	<Parity>None</Parity>
+	<DataBits>8</DataBits>
+	<StopBit>One</StopBit>
+</classParamSerial>
