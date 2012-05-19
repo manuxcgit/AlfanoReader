@@ -5,6 +5,8 @@ using System.Text;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Runtime.Serialization;
+using System.Xml.Linq;
 
 namespace AlfanoReader
 {
@@ -18,37 +20,40 @@ namespace AlfanoReader
             _fileName = v_AdresseBase + fileName;
         }
 
-        public static object LoadFromXML(object o)
+        public static T LoadFromXML<T>(T o)
         {
-            if (File.Exists(_fileName))
+            if (File.Exists(_fileName + "." + o.GetType().Name + ".xml"))
             {
-                object result;
+                T result;
 
-                XmlReader r = XmlReader.Create(new StreamReader(_fileName));
+                StreamReader r = new StreamReader(_fileName + "." + o.GetType().Name + ".xml");
                 try
                 {
-                    XmlSerializer s = new XmlSerializer(o.GetType());
-                    result = s.Deserialize(r);
+                    XmlSerializer s = new XmlSerializer(typeof(classParamSerial));
+                    result = (T) s.Deserialize(r);
                 }
                 finally { r.Close(); }
 
                 return result;
             }
-            return null;
+            return default(T);
         }
 
         public static void SaveToXml(object o)
         {
-              XmlSerializer s = new XmlSerializer(o.GetType());
-              XmlWriterSettings settings = new XmlWriterSettings();
-              settings.Encoding = Encoding.UTF8;
-              settings.Indent = true;
-              settings.IndentChars = ("\t");
-              using (XmlWriter w = XmlWriter.Create(_fileName, settings))
-              {
-                  s.Serialize(w, o);
-                  w.Flush();
-              }   
+            XmlSerializer s = new XmlSerializer(o.GetType());
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Encoding = Encoding.UTF8;
+            settings.Indent = true;
+            settings.IndentChars = ("\t");
+
+
+            using (StreamWriter w = new StreamWriter(_fileName + "." + o.GetType().Name + ".xml"))
+            {
+                s.Serialize(w, o);
+                //  xs.Serialize(w, p);
+                w.Flush();
+            }
         }
     }
 }

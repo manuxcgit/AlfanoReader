@@ -30,29 +30,21 @@ namespace AlfanoReader
         public formMain()
         {
             InitializeComponent();
-            paramApplication.setFileName("param.xml");
-           /* _serial = new classSerial(null);
-            try
-            {
-                _serial._ParamSerial = (classParamSerial)paramApplication.LoadFromXML(typeof(classParamSerial));
+            paramApplication.setFileName("parametres");
+
+            _serial = new classSerial(paramApplication.LoadFromXML<classParamSerial> ( new classParamSerial()));
+            if (_serial._ParamSerial == null)
+            {                
+                _serial = new classSerial(new classParamSerial
+                {
+                    PortName = "COM3",
+                    BaudRate = 9600,
+                    Parity = System.IO.Ports.Parity.None,
+                    DataBits = 8,
+                    StopBit = System.IO.Ports.StopBits.One
+                });
             }
-            catch (Exception e) { } */
-            classParamSerial c = new classParamSerial("COM3", 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One);
-
-            _serial = new classSerial((classParamSerial)paramApplication.LoadFromXML(c));
-
-            if (_serial == null)
-            {
-                //     classSerial.classParamSerial _paramPortSerie = (classSerial.classParamSerial)paramApplication.LoadFromXML(typeof(classSerial.classParamSerial));
-                _serial = new classSerial(new classParamSerial("COM3", 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One));
-            }
-            // paramApplication.SaveToXml(_serial.ParamSerial.BaudRate, typeof(int));
-            paramApplication.SaveToXml(_serial._ParamSerial);//, typeof(classParamSerial));
-            //  string test = _serial._ParamSerial.serialiseObject();
-
             ToolStripMenuItemportSerie.Enabled = true;
-
-
         }
 
         #region Connection Port Serie + creation FichierAlfano
@@ -65,20 +57,6 @@ namespace AlfanoReader
         {
             try
             {
- 
-
-
-
-
-
-
-
-         /*       if (_serial == null )
-                {
-                    _serial = new classSerial(new classParamSerial("COM3", 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One));
-                } */
-                
-
                 _serial.eventInfosSerial += new EventHandler<EventArgsConnecte>(_handler_eventInfosSerial);
                 if (!_serial.m_open())
                 {
@@ -166,7 +144,10 @@ namespace AlfanoReader
 
         private void e_formMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-            try { _serial.m_close(); }
+            try {
+                _serial.m_close();
+                paramApplication.SaveToXml(_serial._ParamSerial);
+            }
             catch { }
         }
 

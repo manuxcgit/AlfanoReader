@@ -11,33 +11,17 @@ using System.Xml.Serialization;
 namespace AlfanoReader
 {
     public enum enumEventArgConnecte { connecté, deconnecté, dataReceived, fichierCréé, transfertCompleted };
-    
-    
+
+
     public class classParamSerial
     {
-        int _baudRate;
-        Parity _parity;
-        int _dataBits;
-        StopBits _stopBit;
-        string _portName;
-
-        public classParamSerial() { }
-
-        public classParamSerial(string portname, int baubrate, Parity parity, int databits, StopBits stopbit)
-        {
-            _portName = portname;
-            _baudRate = baubrate;
-            _parity = parity;
-            _dataBits = databits;
-            _stopBit = stopbit;
-        }
-
-        public string PortName { get { return _portName; } set { } }
-        public int BaudRate { get { return _baudRate; } set { } }
-        public Parity Parity { get { return _parity; } set { } }
-        public int DataBits { get { return _dataBits; } set { } }
-        public StopBits StopBit { get { return _stopBit; } set { } }
+        public string PortName { get; set; }
+        public int BaudRate { get; set; }
+        public Parity Parity { get; set; }
+        public int DataBits { get; set; }
+        public StopBits StopBit { get; set; }
     }
+
     
     public class classSerial 
     {

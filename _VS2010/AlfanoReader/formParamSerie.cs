@@ -43,12 +43,14 @@ namespace AlfanoReader
             {
                 Parity p = (Parity)Enum.GetNames(typeof(Parity)).ToList().FindIndex(x => x.Equals(cBParity.Text));
                 StopBits s = (StopBits)Enum.GetNames(typeof(StopBits)).ToList().FindIndex(y => y.Equals(cBStopBit.Text));
-                _serial._ParamSerial = new classParamSerial(
-                    cBPortName.Text,
-                    int.Parse(cBBaudRate.Text),
-                    p,
-                    int.Parse(cBDataBits.Text),
-                    s);
+                _serial._ParamSerial = new classParamSerial
+                {
+                    PortName = cBPortName.Text,
+                    BaudRate = int.Parse(cBBaudRate.Text),
+                    Parity = p,
+                    DataBits = int.Parse(cBDataBits.Text),
+                    StopBit = s
+                };
                 this.DialogResult = DialogResult.OK;
             }
             catch { }
